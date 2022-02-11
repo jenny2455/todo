@@ -1,0 +1,58 @@
+<p id="notice"><%= notice %></p>
+
+<%# <div class="card"> %>
+  <%# <div class="card-body"> %>
+    <%# <% render 'form_index' %> 
+  <%# </div> %>
+<%# </div> %>
+
+<br>
+
+<table class="table table-bordered">
+
+
+  <tbody>
+    <% @lists.each do |list| %>
+      <% if list.completed%>
+        <tr>
+          <td class="striker"><%= link_to list.description , edit_list_path(list)%></td>
+          <td>
+            <%= form_for(list) do |form| %>
+              <%= form.text_field :description, type: "hidden" %>
+              <%= form.check_box :completed, :checked => false, :style => 'visibility: hidden' %>
+              <%= form.submit "Undo Complete"%>
+            <% end %>
+          </td>
+          <td>
+            <% link_to "Show", list%>
+            <% link_to 'Edit', edit_list_path(list) %>
+            <%= link_to 'Delete', list, method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+        <% else %>
+          <tr>
+            <td><%= link_to list.description , edit_list_path(list)%></td>
+            <td>
+              <%= form_for(list) do |form| %>
+                <%= form.text_field :description, type: "hidden" %>
+                <%= form.check_box :completed, :checked => true, :style => 'visibility: hidden' %>
+                <%= form.submit "Completed"%>
+              <% end %>          
+            </td>
+            <td>
+              <% link_to "Show", list%>
+              <% link_to 'Edit', edit_list_path(list) %>
+              <%= link_to 'Delete', list, method: :delete, data: { confirm: 'Are you sure?' }%>
+            </td>
+          </tr>
+        <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<% link_to 'Add To Do Item', new_list_path, class:"btn btn-success" %>
+
+<%= link_to 'Delete Completed Items', home_trash_em_path, data: { confirm: 'Are you sure?' } %> |
+<%= link_to 'Delete All Items', home_trash_em_all_path, data: { confirm: 'Are you sure?' }%>
